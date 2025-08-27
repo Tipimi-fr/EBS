@@ -4,11 +4,12 @@
 
 
 # https://docs.docker.com/engine/reference/builder/#understand-how-arg-and-from-interact
-ARG PHP_VERSION=8.1
-ARG CADDY_VERSION=2.9.1
+
+ARG PHP_VERSION=8.2
+ARG CADDY_VERSION=2.10.2
 
 # yarn build
-FROM gmolaire/yarn AS yarn_build
+FROM node AS yarn_build
 WORKDIR /usr/app
 RUN apt-get update && apt-get install tar
 RUN mkdir -p /usr/app/vendor/symfony
@@ -184,6 +185,12 @@ RUN rm -f .env.local.php
 
 # Build Caddy with the Mercure and Vulcain modules
 FROM caddy:${CADDY_VERSION}-builder-alpine AS app_caddy_builder
+
+# Temporary fix for https://github.com/dunglas/mercure/issues/770
+# https://github.com/dunglas/symfony-docker/pull/407/files
+
+# FROM caddy:2.9.1-builder-alpine AS app_caddy_builder
+
 
 # RUN xcaddy build \
 #	--with github.com/dunglas/mercure \
