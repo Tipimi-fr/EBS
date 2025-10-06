@@ -7,7 +7,7 @@
     <body>
         <trans-unit id="9eHr8wt" resname="app.controller.security.account_create_controller.step1.flash.success">
             <source>app.controller.security.account_create_controller.step1.flash.success</source>
-            <target>Vous allez recevoir un lien par e-mail pour valider votre adresse e-mail. Cliquez sur ce lien pour poursuivre la création de votre compte.</target>
+            <target>Vous allez recevoir un lien par e-mail. Cliquez sur ce lien pour poursuivre la création de votre compte.</target>
         </trans-unit>
 
         <trans-unit id="n6xZ4Y5" resname="app.controller.security.account_create_controller.step2.flash.success">
@@ -17,7 +17,7 @@
 
         <trans-unit id="jaHXivi" resname="app.controller.security.account_create_controller.step2.global_paid_membership.flash.success">
             <source>app.controller.security.account_create_controller.step2.global_paid_membership.flash.success</source>
-            <target>Votre compte a bien été créé. Pour accéder à la plateforme, veuillez payer l'adhésion.</target>
+            <target>Pour finaliser la création de votre compte, veuillez procéder au paiement de votre adhésion annuelle au site.</target>
         </trans-unit>
 
         <trans-unit id="ueGTY73" resname="app.controller.security.account_create_controller.step2.with_invitation.flash.success">

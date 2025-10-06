@@ -23,7 +23,7 @@
 
         <trans-unit id="v4xDplQ" resname="templates.pages.redirect_to_payment.choose_offer">
             <source>templates.pages.redirect_to_payment.choose_offer</source>
-            <target>Rejoindre la plateforme</target>
+            <target>Rejoindre la communauté</target>
         </trans-unit>
 
         <trans-unit id="DMvoLvx" resname="templates.pages.redirect_to_payment.close">
@@ -53,7 +53,7 @@
 
         <trans-unit id="wSc8oud" resname="templates.pages.redirect_to_payment.text">
             <source>templates.pages.redirect_to_payment.text</source>
-            <target>Pour avoir accès aux prêts/emprunts sur notre plateforme, il faut être adhérent.</target>
+            <target>Pour avoir accès aux prêts et emprunts sur notre plateforme, il faut être à jour de son adhésion annuelle.</target>
         </trans-unit>
 
         <trans-unit id="wSc6sFt" resname="templates.pages.redirect_to_payment.button">

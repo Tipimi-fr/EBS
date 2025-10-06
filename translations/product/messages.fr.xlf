@@ -22,7 +22,7 @@
         </trans-unit>
         <trans-unit id="N34o4vw" resname="product.info_loan_duration">
             <source>product.info_loan_duration</source>
-            <target>Durée d'emprunt souhaitée: </target>
+            <target>Durée d'emprunt maximum: </target>
         </trans-unit>
 
         <trans-unit id="To7vV16" resname="product.info_more">
@@ -32,7 +32,7 @@
 
         <trans-unit id="uyV8Saf" resname="product.list_name">
             <source>product.list_name</source>
-            <target>Rechercher un article</target>
+            <target>Rechercher un objet</target>
         </trans-unit>
 
         <trans-unit id="r5MLTuQ" resname="product.list_type_objects">
@@ -113,7 +113,7 @@
         <!-- product forms -->
         <trans-unit id="X4i3dq6" resname="new_product.available">
             <source>new_product.available</source>
-            <target>Je mets à disposition :</target>
+            <target>Je propose au prêt :</target>
         </trans-unit>
 
         <trans-unit id="n1hMwbU" resname="product.form.category">
@@ -212,12 +212,12 @@
 
         <trans-unit id="CzoaqUn" resname="object.form.preferredLoanDuration">
             <source>object.form.preferredLoanDuration</source>
-            <target>Durée d’emprunt souhaitée</target>
+            <target>Durée d’emprunt maximum</target>
         </trans-unit>
 
         <trans-unit id="uFg1WKX" resname="object.form.deposit">
             <source>object.form.deposit</source>
-            <target>Montant de la caution</target>
+            <target>Montant de la caution (optionnel)</target>
         </trans-unit>
 
         <!-- show availabilities product page -->

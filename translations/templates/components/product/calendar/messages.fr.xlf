@@ -38,7 +38,7 @@
 
         <trans-unit id="oq9A0mZ" resname="templates.components.product.calendar.clarifying_sentence">
             <source>templates.components.product.calendar.clarifying_sentence</source>
-            <target>Sélectionnez vos dates dans le calendrier et cliquez sur le bouton "Envoyer ma demande" pour faire une demande d'emprunt</target>
+            <target>Sélectionnez vos dates dans le calendrier et cliquez sur le bouton "Envoyer ma demande" pour faire une demande d'emprunt. Attention à la durée maximum d'emprunt noté dans l'annonce.</target>
         </trans-unit>
 
     </body>

@@ -27,7 +27,7 @@
 
         <trans-unit id="vWga1Zy" resname="templates.components.product.search.place.label">
             <source>templates.components.product.search.place.label</source>
-            <target>Chez un partenaire</target>
+            <target>Cop's de Tipimi</target>
         </trans-unit>
 
         <trans-unit id="GCpgofS" resname="templates.components.product.search.place.tooltip">

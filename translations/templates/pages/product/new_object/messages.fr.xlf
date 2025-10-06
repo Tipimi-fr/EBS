@@ -7,7 +7,7 @@
     <body>
          <trans-unit id="bEHvUXU" resname="templates.pages.product.new_object.title">
             <source>templates.pages.product.new_object.title</source>
-             <target>Créer un objet</target>
+             <target>Ajouter un objet</target>
          </trans-unit>
     </body>
   </file>
