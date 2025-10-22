@@ -1,6 +1,7 @@
 {% set is_product_owner = product.owner == app.user %}
 
-<div class="bg-light rounded-2 p-3" data-controller="calendar" data-calendar-unavailabilities-value="{{ product.getUnavailabilities()|join(',') }}">
+<div class="bg-light rounded-2 p-3" data-controller="calendar"
+     data-calendar-unavailabilities-value="{{ product.getUnavailabilities()|join(',') }}">
     <div class="row">
         <div class="col">
             <h5>{{ title }}</h5>
@@ -71,22 +72,36 @@
             </div>
         {% endif %}
         <div class="d-grid col mt-3">
-            <button class="btn border border-0 text-primary text-decoration-underline" data-action="click->calendar#resetDates" type="button">
+            <button class="btn border border-0 text-primary text-decoration-underline"
+                    data-action="click->calendar#resetDates" type="button">
                 {{ 'templates.components.product.calendar.reset'|trans }}
             </button>
         </div>
-        {% if actionNeeded  %}
+        {% if actionNeeded %}
             <div class="d-grid col-12 mt-3">
                 {% if app.user is null or is_granted('borrow', product) %}
-                    <button
-                        id="service-request"
-                        class="btn btn-sm btn-primary"
-                        data-path="{{ path('app_user_service_request_new', {id: product.id}) }}"
-                        data-action="click->calendar#serviceRequest"
-                        disabled
-                    >
-                        {{ 'templates.components.product.calendar.service_request'|trans }}
-                    </button>
+                    {% if app.user and app.user.address is null %}
+                        {% include 'components/product/_modal.html.twig' with {
+                            menu_action: false,
+                            page_type: 'article',
+                            button: 'templates.components.product.calendar.service_request'|trans,
+                            title: 'templates.pages.account.index.no-address-title'|trans,
+                            message: 'templates.pages.account.index.no-address-message'|trans({
+                                '%product%': product.type.isObject ? 'objet' : 'service'
+                            }),
+                            action: 'templates.pages.account.product.list.no-address-add'|trans
+                        } %}
+                    {% else %}
+                        <button
+                            id="service-request"
+                            class="btn btn-sm btn-primary"
+                            data-path="{{ path('app_user_service_request_new', {id: product.id}) }}"
+                            data-action="click->calendar#serviceRequest"
+                            disabled
+                        >
+                            {{ 'templates.components.product.calendar.service_request'|trans }}
+                        </button>
+                    {% endif %}
                 {% else %}
                     {{ form_widget(form.submit) }}
                 {% endif %}

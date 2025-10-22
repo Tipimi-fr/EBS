@@ -5,11 +5,10 @@ declare(strict_types=1);
 namespace App\Form\Type\Security;
 
 use App\Entity\User;
-use App\Enum\User\UserType;
+use libphonenumber\PhoneNumberFormat;
+use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -27,19 +26,6 @@ final class AccountCreateStep2FormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('type', ChoiceType::class, [
-                'label' => 'account_create_action.account_type',
-                'label_attr' => ['class' => 'text-black fw-light'],
-                'choices' => UserType::getForFront(),
-                'choice_attr' => function () {
-                    return [
-                        'data-controller' => 'account',
-                        'data-action' => 'click->account#choosenType',
-                    ];
-                },
-                'expanded' => true,
-            ])
-
             ->add('firstname', TextType::class, [
                 'label' => 'account_create_action.firsname',
                 'label_attr' => ['class' => 'text-black fw-light required'],
@@ -60,14 +46,14 @@ final class AccountCreateStep2FormType extends AbstractType
                 'required' => false,
             ])
 
-            ->add('name', TextType::class, [
-                'label' => 'account_create_action.name',
-                'label_attr' => ['class' => 'text-black fw-light required'],
-                'attr' => [
-                    'class' => 'form-control-sm input-name',
-                    'placeholder' => 'account_create_action.name.placeholder',
-                ],
-                'required' => false,
+            ->add('phone', PhoneNumberType::class, [
+                'label' => 'account_create_action.phone',
+                'label_attr' => ['class' => 'text-black fs-6 fw-normal'],
+                'widget' => PhoneNumberType::WIDGET_COUNTRY_CHOICE,
+                'format' => PhoneNumberFormat::INTERNATIONAL,
+                'country_display_emoji_flag' => true,
+                'preferred_country_choices' => ['FR'],
+                'required' => true,
             ])
 
             ->add('plainPassword', RepeatedType::class, [
@@ -118,15 +104,6 @@ final class AccountCreateStep2FormType extends AbstractType
                 'attr' => ['class' => 'btn btn-primary btn-sm'],
             ])
         ;
-
-        $builder->get('type')->addModelTransformer(new CallbackTransformer(
-            function (?UserType $enumToString) {
-                return $enumToString === null ? '' : $enumToString->value;
-            },
-            function (string $stringToEnum) {
-                return UserType::from($stringToEnum);
-            }
-        ));
     }
 
     public function configureOptions(OptionsResolver $resolver): void

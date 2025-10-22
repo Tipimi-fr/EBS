@@ -31,7 +31,6 @@
 
     {{ form_start(form, {attr: {novalidate: true}}) }}
 
-    {{ form_row(form.type) }}
     <div class="user-input mt-2">
         {{ form_label(form.firstname) }}
         {{ form_widget(form.firstname) }}
@@ -40,10 +39,10 @@
         {{ form_widget(form.lastname) }}
         {{ form_errors(form.lastname) }}
     </div>
-    <div class="place-input mt-2">
-        {{ form_label(form.name) }}
-        {{ form_widget(form.name) }}
-        {{ form_errors(form.name) }}
+    <div class="phone-input mt-2">
+        {{ form_label(form.phone) }}
+        {{ form_widget(form.phone) }}
+        {{ form_errors(form.phone) }}
     </div>
 
     {% include 'components/form/_password_visibility.html.twig' with {
