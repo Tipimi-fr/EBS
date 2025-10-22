@@ -8,6 +8,7 @@ use App\Controller\FlashTrait;
 use App\Controller\i18nTrait;
 use App\Controller\User\MyAccountAction;
 use App\Entity\User;
+use App\Enum\User\UserType;
 use App\Exception\UserConfirmationTokenExpiredException;
 use App\Exception\UserNotFoundException;
 use App\Form\Type\Security\AccountCreateStep1FormType;
@@ -105,6 +106,7 @@ final class AccountCreateController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var User $user */
             $user = $form->getData();
+            $user->setType(UserType::USER);
             $this->commandBus->dispatch(new AccountCreateStep2Command($user));
             $this->security->login($user); // auto-log the user
 

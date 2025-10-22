@@ -75,6 +75,11 @@
             <target>8 caractères minimun</target>
         </trans-unit>
 
+        <trans-unit id="3Wd6Kp0" resname="account_create_action.phone">
+            <source>account_create_action.phone</source>
+            <target>Numéro de téléphone</target>
+        </trans-unit>
+
         <trans-unit id="m3UMrJf" resname="account_create_action.gdpr">
             <source>account_create_action.gdpr</source>
             <target>J’ai lu et j’accepte les <![CDATA[<a href="%link%" class="text-primary">Conditions Générales d'Utilisation</a>]]></target>

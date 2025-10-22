@@ -26,6 +26,7 @@ final class UserManagerTest extends KernelTestCase
 
         $user = new User();
         $user->setEmail(ByteString::fromRandom(6)->toString().'@example.com');
+        $user->setPhoneNumber('+33600000000');
         $user->setPassword('foo');
 
         $userManager->save($user, true);

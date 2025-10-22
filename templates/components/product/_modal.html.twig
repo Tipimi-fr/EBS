@@ -1,7 +1,14 @@
 {% if menu_action is defined and menu_action == true %}
     <span class="text-decoration-none text-primary ms-2 position-relative pe-1 cursor-pointer"
-        data-bs-toggle="modal"
-        data-bs-target="#modalAddAddress">{{ button }}</span>
+          data-bs-toggle="modal"
+          data-bs-target="#modalAddAddress">{{ button }}</span>
+{% elseif menu_action is defined and menu_action == false and page_type == 'article' %}
+    <button type="button"
+            class="btn btn-primary"
+            data-bs-toggle="modal"
+            data-bs-target="#modalAddAddress">
+        {{ button }}
+    </button>
 {% else %}
     <div class="d-grid col-12 col-lg-4 mx-auto my-3 order-last">
         <button type="button"
@@ -32,7 +39,7 @@
                 <button type="button"
                         class="btn btn-outline-secondary"
                         data-bs-dismiss="modal">
-                    {{ (i18n_prefix ~ '.no-address-cancel')|trans }}
+                    {{ 'templates.pages.account.product.list.no-address-cancel'|trans }}
                 </button>
                 <a href="{{ path('user_address_step1') }}"
                    class="btn btn-secondary">

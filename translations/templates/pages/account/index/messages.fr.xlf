@@ -74,7 +74,7 @@
 
           <trans-unit id="ftBMsiP" resname="templates.pages.account.index.no-address-message">
              <source>templates.pages.account.index.no-address-message</source>
-             <target>Pour pouvoir créer un %product%, commencez par remplir votre adresse.</target>
+             <target>Pour pouvoir créer ou emprunter un %product%, commencez par remplir votre adresse.</target>
          </trans-unit>
 
          <trans-unit id="e8xvcp6" resname="templates.pages.account.index.no-address-cancel">
