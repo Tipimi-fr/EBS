@@ -44,7 +44,7 @@ final class EditProfileActionTest extends WebTestCase
             $form->getName().'[category]' => TestReference::CATEGORY_OBJECT_1,
             $form->getName().'[description]' => 'description test',
             $form->getName().'[phone][country]' => 'FR',
-            $form->getName().'[phone][number]' => '',
+            $form->getName().'[phone][number]' => '634563424',
             $form->getName().'[smsNotifications]' => false,
         ]);
 
@@ -53,7 +53,7 @@ final class EditProfileActionTest extends WebTestCase
 
         /** @var User $editedUser */
         $editedUser = $repo->find(TestReference::USER_16);
-        self::assertNull($editedUser->getPhoneNumber());
+        self::assertNotNull($editedUser->getPhoneNumber());
 
         self::assertResponseRedirects();
         $client->followRedirect();
