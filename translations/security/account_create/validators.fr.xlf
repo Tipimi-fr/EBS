@@ -26,6 +26,16 @@
             <target>Le nom du lieu est obligatoire</target>
         </trans-unit>
 
+        <trans-unit id="tY0WDru" resname="account_create.phone.empty.error">
+            <source>account_create.phone.empty.error</source>
+            <target>Le numéro de téléphone est obligatoire</target>
+        </trans-unit>
+
+        <trans-unit id="tY0WDzu" resname="account_create.phone.short.error">
+            <source>account_create.phone.short.error</source>
+            <target>Veuillez indiquer un numéro de téléphone valide</target>
+        </trans-unit>
+
     </body>
   </file>
 </xliff>

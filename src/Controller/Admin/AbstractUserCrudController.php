@@ -342,7 +342,7 @@ abstract class AbstractUserCrudController extends AbstractCrudController impleme
             ->setFormType(PhoneNumberType::class)
             ->setFormTypeOptions([
                 'format' => PhoneNumberFormat::INTERNATIONAL,
-                'required' => false,
+                'required' => true,
             ])
             ->setHelp($i18prefix.'.field.phone.help')
         ;

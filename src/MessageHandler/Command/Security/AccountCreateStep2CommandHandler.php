@@ -9,6 +9,8 @@ use App\Entity\User;
 use App\Enum\User\UserType;
 use App\Message\Command\Security\AccountCreateStep2Command;
 use App\Repository\UserRepository;
+use libphonenumber\PhoneNumberFormat;
+use libphonenumber\PhoneNumberUtil;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Webmozart\Assert\Assert;
 
@@ -47,6 +49,11 @@ final class AccountCreateStep2CommandHandler
                 throw new \UnexpectedValueException('This hanlder can only create users or places.');
         }
 
+        $phoneObjectToString = PhoneNumberUtil::getInstance()->format(
+            $message->phone,
+            PhoneNumberFormat::E164
+        );
+        $user->setPhoneNumber($phoneObjectToString);
         $this->userManager->updatePassword($user->setPlainPassword($message->plainPassword));
         $this->userManager->finalizeAccountCreateStep2($user);
         $this->userManager->save($user, true);

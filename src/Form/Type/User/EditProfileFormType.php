@@ -50,8 +50,9 @@ final class EditProfileFormType extends AbstractType
                 'label_attr' => ['class' => 'text-black fs-6 fw-normal'],
                 'format' => PhoneNumberFormat::INTERNATIONAL,
                 'widget' => PhoneNumberType::WIDGET_COUNTRY_CHOICE,
+                'country_display_emoji_flag' => true,
                 'preferred_country_choices' => ['FR'],
-                'required' => false,
+                'required' => true,
             ])
 
             ->add('smsNotifications', CheckboxType::class, [
