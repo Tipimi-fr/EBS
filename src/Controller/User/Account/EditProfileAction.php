@@ -13,7 +13,9 @@ use App\Form\Type\User\EditProfileFormType;
 use App\Repository\UserRepository;
 use App\Tests\Functional\Controller\User\Account\EditProfileActionTest;
 use Doctrine\ORM\EntityManagerInterface;
+use libphonenumber\PhoneNumber;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,6 +23,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Authorization\Voter\AuthenticatedVoter;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * @see EditProfileActionTest
@@ -34,6 +37,7 @@ final class EditProfileAction extends AbstractController
         private readonly UserRepository $userRepository,
         private readonly UserManager $userManager,
         private readonly EntityManagerInterface $entityManager,
+        private readonly TranslatorInterface $translator,
     ) {
     }
 
@@ -45,14 +49,30 @@ final class EditProfileAction extends AbstractController
     public function __invoke(Request $request, #[CurrentUser] User $user): Response
     {
         $form = $this->createForm(EditProfileFormType::class, $user)->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            /** @var UploadedFile|null $avatar */
-            $avatar = $form->get('avatar')->getData();
-            $this->userManager->upload($avatar, $user);
-            $this->userRepository->save($user, true);
-            $this->addFlashSuccess($this->getI18nPrefix().'.flash.success');
+        if ($form->isSubmitted()) {
+            $phone = $form->get('phone')->getData() ?? '';
 
-            return $this->redirectToRoute(MyAccountAction::ROUTE);
+            if (!$phone instanceof PhoneNumber || $phone->getNationalNumber() === '') {
+                $form->get('phone')->addError(
+                    new FormError($this->translator->trans('account_create.phone.empty.error', [], 'validators'))
+                );
+            }
+
+            if ($phone instanceof PhoneNumber && \strlen($phone->getNationalNumber() ?? '') < 8) {
+                $form->get('phone')->addError(
+                    new FormError($this->translator->trans('account_create.phone.short.error', [], 'validators'))
+                );
+            }
+
+            if ($form->isValid()) {
+                /** @var UploadedFile|null $avatar */
+                $avatar = $form->get('avatar')->getData();
+                $this->userManager->upload($avatar, $user);
+                $this->userRepository->save($user, true);
+                $this->addFlashSuccess($this->getI18nPrefix().'.flash.success');
+
+                return $this->redirectToRoute(MyAccountAction::ROUTE);
+            }
         }
 
         // In case of error, we must reload the original firstname (to display it in navbar)

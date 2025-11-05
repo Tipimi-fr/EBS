@@ -33,11 +33,12 @@ final class AccountCreateActionStep2UserInvitationTest extends WebTestCase
 
         $password = ByteString::fromRandom(13);
         $client->submit($form, [
-            $form->getName().'[type]' => 'user',
             $form->getName().'[firstname]' => 'Foo',
             $form->getName().'[lastname]' => 'Bar',
             $form->getName().'[plainPassword][first]' => $password,
             $form->getName().'[plainPassword][second]' => $password,
+            $form->getName().'[phone][country]' => 'FR',
+            $form->getName().'[phone][number]' => '602030405',
             $form->getName().'[gdpr]' => 1,
         ]);
         self::assertResponseRedirects();

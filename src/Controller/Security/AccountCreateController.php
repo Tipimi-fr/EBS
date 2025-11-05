@@ -8,6 +8,7 @@ use App\Controller\FlashTrait;
 use App\Controller\i18nTrait;
 use App\Controller\User\MyAccountAction;
 use App\Entity\User;
+use App\Enum\User\UserType;
 use App\Exception\UserConfirmationTokenExpiredException;
 use App\Exception\UserNotFoundException;
 use App\Form\Type\Security\AccountCreateStep1FormType;
@@ -20,12 +21,15 @@ use App\MessageBus\CommandBus;
 use App\MessageBus\QueryBus;
 use App\MessageHandler\Command\Security\AccountCreateStep1CommandHandler;
 use App\Repository\ConfigurationRepository;
+use libphonenumber\PhoneNumber;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\Exception\HandlerFailedException;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * @see AccountCreateActionStep1Test
@@ -43,6 +47,7 @@ final class AccountCreateController extends AbstractController
         private readonly CommandBus $commandBus,
         private readonly Security $security,
         private readonly ConfigurationRepository $configurationRepository,
+        private readonly TranslatorInterface $translator,
     ) {
         $this->i18nPrefix = $this->getI18nPrefix();
     }
@@ -102,39 +107,55 @@ final class AccountCreateController extends AbstractController
         $configuration = $this->configurationRepository->getInstanceConfigurationOrCreate();
         // nominal case: user found and token not expired
         $form = $this->createForm(AccountCreateStep2FormType::class, $user->setStep2Defaults())->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            /** @var User $user */
-            $user = $form->getData();
-            $this->commandBus->dispatch(new AccountCreateStep2Command($user));
-            $this->security->login($user); // auto-log the user
+        if ($form->isSubmitted()) {
+            $phone = $form->get('phone')->getData() ?? '';
 
-            // If user has pending invitations then redirect them to the first group
-            // found without doing the confirmation stuff, it must be done on the
-            // page group.
-            $group = $user->getMyGroupsAsInvited()->first();
-            if ($group !== false) {
-                // If platform needs payment, redirect to payment
-                if ($configuration->getPaidMembership()) {
-                    $successMessage = $this->i18nPrefix.'.step2.with_invitation.global_paid_membership.flash.success';
+            if (!$phone instanceof PhoneNumber || $phone->getNationalNumber() === '') {
+                $form->get('phone')->addError(
+                    new FormError($this->translator->trans('account_create.phone.empty.error', [], 'validators'))
+                );
+            }
+
+            if ($phone instanceof PhoneNumber && \strlen($phone->getNationalNumber() ?? '') < 8) {
+                $form->get('phone')->addError(
+                    new FormError($this->translator->trans('account_create.phone.short.error', [], 'validators'))
+                );
+            }
+            if ($form->isValid()) {
+                /** @var User $user */
+                $user = $form->getData();
+                $user->setType(UserType::USER);
+                $this->commandBus->dispatch(new AccountCreateStep2Command($user));
+                $this->security->login($user); // auto-log the user
+
+                // If user has pending invitations then redirect them to the first group
+                // found without doing the confirmation stuff, it must be done on the
+                // page group.
+                $group = $user->getMyGroupsAsInvited()->first();
+                if ($group !== false) {
+                    // If platform needs payment, redirect to payment
+                    if ($configuration->getPaidMembership()) {
+                        $successMessage = $this->i18nPrefix.'.step2.with_invitation.global_paid_membership.flash.success';
+                        $this->addFlashSuccess($successMessage);
+
+                        return $this->redirectToRoute('redirect_to_payment');
+                    }
+                    $successMessage = $this->i18nPrefix.'.step2.with_invitation.flash.success';
                     $this->addFlashSuccess($successMessage);
 
-                    return $this->redirectToRoute('redirect_to_payment');
+                    return $this->redirectToRoute('app_group_show_logged', $group->getRoutingParameters());
                 }
-                $successMessage = $this->i18nPrefix.'.step2.with_invitation.flash.success';
+
+                if ($configuration->getPaidMembership()) {
+                    $successMessage = $this->i18nPrefix.'.step2.global_paid_membership.flash.success';
+                } else {
+                    $successMessage = $this->i18nPrefix.'.step2.flash.success';
+                }
+                // otherwise go to the address form
                 $this->addFlashSuccess($successMessage);
 
-                return $this->redirectToRoute('app_group_show_logged', $group->getRoutingParameters());
+                return $this->redirectToRoute(MyAccountAction::ROUTE);
             }
-
-            if ($configuration->getPaidMembership()) {
-                $successMessage = $this->i18nPrefix.'.step2.global_paid_membership.flash.success';
-            } else {
-                $successMessage = $this->i18nPrefix.'.step2.flash.success';
-            }
-            // otherwise go to the address form
-            $this->addFlashSuccess($successMessage);
-
-            return $this->redirectToRoute(MyAccountAction::ROUTE);
         }
 
         return $this->render('pages/register/step2.html.twig', compact('form', 'user'));

@@ -10,6 +10,7 @@ use App\Message\Command\Security\AccountCreateStep2Command;
 use App\MessageHandler\Command\Security\AccountCreateStep2CommandHandler;
 use App\Tests\TestReference;
 use Hautelook\AliceBundle\PhpUnit\RefreshDatabaseTrait;
+use libphonenumber\PhoneNumberUtil;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Uid\Uuid;
 
@@ -25,11 +26,17 @@ final class AccountCreateStep2CommandHandlerTest extends KernelTestCase
 
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionMessage('This hanlder can only create users or places');
+
         $user = (new User())
             ->setId(Uuid::fromString(TestReference::USER_17))
             ->setType(UserType::ADMIN)
             ->setPlainPassword('foo')
         ;
+
+        $phoneUtil = PhoneNumberUtil::getInstance();
+        $phone = $phoneUtil->parse('+33602030405', 'FR');
+        $user->phone = $phone;
+
         $message = new AccountCreateStep2Command($user);
         $handler($message);
     }

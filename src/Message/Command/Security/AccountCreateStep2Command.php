@@ -7,6 +7,7 @@ namespace App\Message\Command\Security;
 use App\Entity\User;
 use App\Enum\User\UserType;
 use App\MessageHandler\Command\Security\AccountCreateStep2CommandHandler;
+use libphonenumber\PhoneNumber;
 use Symfony\Component\Uid\Uuid;
 use Webmozart\Assert\Assert;
 
@@ -22,6 +23,7 @@ final class AccountCreateStep2Command
     public ?string $firstname = null;
     public ?string $name = null;
     public string $plainPassword;
+    public PhoneNumber $phone;
 
     public function __construct(User $user)
     {
@@ -33,5 +35,7 @@ final class AccountCreateStep2Command
         $this->name = $user->getName();
         Assert::stringNotEmpty($user->getPlainPassword());
         $this->plainPassword = $user->getPlainPassword();
+        Assert::notNull($user->phone);
+        $this->phone = $user->phone;
     }
 }

@@ -88,7 +88,6 @@ App\Entity\User:
         name: 'APES compte lieu'
         address: '@address_region_hauts_de_france'
         schedule: '9h30 - 17h30'
-        phoneNumber: null
         createdAt: <date_create_immutable('+1 month')>
         
     # —— Users —————————————————————————————————————————————————————————————————
@@ -170,6 +169,7 @@ App\Entity\User:
         firstname: <firstname()>
         lastname: <lastname()>
         address: null
+        phoneNumber: '+33600000000'
         avatar: 'a9a9bf49-24e4-4b3e-bdbd-86808c32939e.jpg'    
     
     # user with an address and a preferred category set
