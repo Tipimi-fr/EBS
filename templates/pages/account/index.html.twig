@@ -45,7 +45,7 @@
             icon: null
         },
         {
-            name: 'Créer un objet',
+            name: 'Ajouter un objet',
             link: 'app_object_new',
             icon: null,
             needAddress: app.user.address is null ? true : false
@@ -96,7 +96,7 @@
         icon: 'fa-solid fa-user-group'
     },
     {
-        section: 'Compte',
+        section: 'Mes informations personnelles',
         enable: true,
         links: [
         {
@@ -110,12 +110,12 @@
             icon: null
         },
         {
-            name: 'Changer mon adresse e-mail',
+            name: 'Modifier mon adresse e-mail',
             link: 'app_user_change_login',
             icon: null
         },
         {
-            name: 'Changer mon mot de passe',
+            name: 'Modifier mon mot de passe',
             link: 'app_user_change_password',
             icon: null
         },
@@ -199,6 +199,7 @@
             </a>
         </div>
     </div>
+    <div class="alert alert-primary mt-3"><i class="fa-solid fa-info-circle me-3" aria-hidden="true"></i>Toutes vos informations (nom, mail, téléphone, adresse mail et postale) sont exclusivement visibles par l'équipe salariée de Tipimi : respect du RGPD, aucune revente de données, pas de partenariat avec des publicitaires.</div>
 {% endblock %}
 
 {% block link %}{% endblock %}

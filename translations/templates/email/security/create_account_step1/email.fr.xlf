@@ -22,7 +22,7 @@
 
         <trans-unit id="t4enpNh" resname="templates.email.security.create_account_step1.p1">
             <source>templates.email.security.create_account_step1.p1</source>
-            <target>Cliquez sur le lien suivant pour confirmer votre compte :</target>
+            <target>Cliquez sur le lien suivant pour confirmer la création de votre compte :</target>
         </trans-unit>
 
         <trans-unit id="5gYhcxN" resname="templates.email.security.create_account_step1.cta">

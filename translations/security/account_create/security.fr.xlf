@@ -87,7 +87,7 @@
 
         <trans-unit id="6ptnuZ4" resname="account_create_action.info">
             <source>account_create_action.info</source>
-            <target>Un email avec un lien de validation vous sera envoyé. Vous avez 24 heures pour confirmer votre compte.</target>
+            <target>Un email de validation va vous être envoyé. Vous avez 24 heures pour confirmer votre création de compte.</target>
         </trans-unit>
     </body>
   </file>

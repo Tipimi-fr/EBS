@@ -23,7 +23,7 @@
         </trans-unit>
         <trans-unit id="EZdEH11" resname="templates.pages.account.product.list.object.new">
             <source>templates.pages.account.product.list.object.new</source>
-            <target>Créer un objet</target>
+            <target>Ajouter un objet</target>
         </trans-unit>
         <trans-unit id="vZvGPhy" resname="templates.pages.account.product.list.service.no_result">
             <source>templates.pages.account.product.list.service.no_result</source>
@@ -31,7 +31,7 @@
         </trans-unit>
         <trans-unit id="XRwRk1t" resname="templates.pages.account.product.list.service.new">
             <source>templates.pages.account.product.list.service.new</source>
-            <target>Créer un service</target>
+            <target>Ajouter un service</target>
         </trans-unit>
         <trans-unit id="BNAjbAv" resname="templates.pages.account.product.list.category">
             <source>templates.pages.account.product.list.category</source>

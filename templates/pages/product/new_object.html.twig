@@ -25,7 +25,6 @@
             <div class="col-md-8 col-lg-6 col-xl-5">
                 {{ form_start(form) }}
                 {% include 'components/product/_object_fields.html.twig' %}
-                {% include 'components/product/_address_form.html.twig' %}
                 {% include 'components/product/service_request/_submit.html.twig' with {
                     submit: form.submit
                 } %}

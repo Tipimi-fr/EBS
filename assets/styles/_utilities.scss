@@ -49,7 +49,7 @@
 .text-bg-blue-custom {
     color: $blue-500;
     border: 1px solid $blue-200;
-    background-color: $blue-100;
+    background-color: $cyan-100;
 }
 
 .featured-image {
@@ -111,7 +111,7 @@
 
 .page-content {
     a {
-        color: $blue-500;;
+        color: $primary;
         text-decoration: none;
     }
     a:hover {
