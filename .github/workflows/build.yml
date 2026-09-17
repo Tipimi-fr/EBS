@@ -64,7 +64,7 @@ jobs:
       id: meta
       uses: docker/metadata-action@v6
       with:
-        images: ${{ vars.REGISTRY_NAME }}/tipimi-${{ vars[matrix.image_var] }}
+        images: "${{ vars.REGISTRY_NAME }}/tipimi-${{ vars[matrix.image_var] }}"
         tags: |
           type=raw,value=prod-{{sha}},enable=${{ github.ref_type == 'tag' }}
           type=raw,value=nonprod-{{sha}},enable=${{ github.event_name != 'pull_request' && github.ref_type != 'tag' }}
