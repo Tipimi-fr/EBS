@@ -42,9 +42,9 @@ jobs:
       matrix:
         include:
         - target: app_php
-          image_name: tipimi-${{ vars.IMAGE_NAME_PHP }}
+          image_var: ${{ vars.IMAGE_NAME_PHP }} 
         - target: app_caddy
-          image_name: tipimi-${{ vars.IMAGE_NAME_CADDY }}
+          image_var: ${{ vars.IMAGE_NAME_CADDY }} 
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -64,7 +64,7 @@ jobs:
       id: meta
       uses: docker/metadata-action@v6
       with:
-        images: ${{vars.REGISTRY_NAME}}/${{ matrix.image_name }}
+        images: ${{ vars.REGISTRY_NAME }}/tipimi-${{ vars[matrix.image_var] }}
         tags: |
           type=raw,value=prod-{{sha}},enable=${{ github.ref_type == 'tag' }}
           type=raw,value=nonprod-{{sha}},enable=${{ github.event_name != 'pull_request' && github.ref_type != 'tag' }}
