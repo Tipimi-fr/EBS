@@ -34,6 +34,7 @@ jobs:
     if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
     name: Build
     uses: ./.github/workflows/build.yml
+    secrets: inherit
 
   deploy:
     if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
