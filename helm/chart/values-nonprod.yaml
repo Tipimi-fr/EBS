@@ -18,7 +18,13 @@ redis:
     size: "1Gi"
 
 php:
+  image:
+    repository: "rg.fr-par.scw.cloud/infra-mut-cr-scw/tipimi-ebs-php"
   fixtureJob:
     enabled: true
   fixtureCron:
     enabled: true
+
+caddy:
+  image:
+    repository: "rg.fr-par.scw.cloud/infra-mut-cr-scw/tipimi-ebs-caddy"
