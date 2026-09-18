@@ -5,7 +5,7 @@
 
 # https://docs.docker.com/engine/reference/builder/#understand-how-arg-and-from-interact
 ARG PHP_VERSION=8.2
-ARG CADDY_VERSION=2.10.2
+ARG CADDY_VERSION=2.11.4
 
 # yarn build
 FROM node AS yarn_build
@@ -196,6 +196,10 @@ FROM caddy:${CADDY_VERSION}-builder-alpine AS app_caddy_builder
 #	--with github.com/dunglas/mercure/caddy \
 #	--with github.com/dunglas/vulcain \
 #	--with github.com/dunglas/vulcain/caddy
+
+# mercure/caddy >= v1.0.0 requires Go >= 1.27, newer than what the builder image ships;
+# let go fetch the required toolchain automatically instead of pinning an older mercure/caddy
+ENV GOTOOLCHAIN=auto
 
 RUN xcaddy build \
 	--with github.com/dunglas/mercure/caddy \
