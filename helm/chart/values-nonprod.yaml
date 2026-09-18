@@ -1,13 +1,6 @@
 imagePullSecrets:
   - name: regcred
 
-php:
-  image:
-    repository: "rg.fr-par.scw.cloud/infra-mut-cr-scw/tipimi-ebs-php"
-caddy:
-  image:
-    repository: "rg.fr-par.scw.cloud/infra-mut-cr-scw/tipimi-ebs-caddy"
-
 route:
   enabled: true
   host: tipimi-ebs.lt-mut-nonprod-scw.les-tilleuls.solutions
