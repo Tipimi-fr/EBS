@@ -8,7 +8,7 @@ ARG PHP_VERSION=8.2
 ARG CADDY_VERSION=2.11.4
 
 # yarn build
-FROM node AS yarn_build
+FROM node:22 AS yarn_build
 WORKDIR /usr/app
 RUN apt-get update && apt-get install tar
 RUN mkdir -p /usr/app/vendor/symfony
