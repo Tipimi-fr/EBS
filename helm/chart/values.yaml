@@ -10,7 +10,6 @@ php:
     tag: ""
   appEnv: prod
   appDebug: "0"
-  appSecret: ""
   corsAllowOrigin: "^https?://.*?\\.chart-example\\.local$"
   trustedHosts: 
     - "^127\\.0\\.0\\.1"
@@ -22,10 +21,6 @@ php:
     - "172.16.0.0/12"
     - "192.168.0.0/16"
   host: "ebs.chart-example.local"
-  jwt:
-    secretKey: ""
-    publicKey: ""
-    passphrase: ""
   storage:
     # bucket/endpoint/region/key/secret come from the "bucket-credentials" Secret,
     # provisioned by infra (Tofu) in the release namespace -- not by this chart, see
@@ -42,10 +37,12 @@ dailyCronjobs:
 maildev:
   enabled: false
 
-# MAILER_DSN, SMS_DSN, PAYUM_APIKEY and PAYUM_GATEWAY come from the "external-secrets" Secret,
-# provisioned by infra (Tofu) from Scaleway Secret Manager in the release namespace -- not by
-# this chart, see templates/deployment.yaml. MAILER_DSN is the only exception: it's overridden
-# with the bundled maildev subchart's DSN when maildev.enabled is true (local dev).
+# All app secrets come from the "external-secrets" Secret, provisioned by infra (Tofu) from
+# Scaleway Secret Manager in the release namespace -- not by this chart, see
+# templates/deployment.yaml. Expected keys: APP_SECRET, JWT_PASSPHRASE, JWT_PUBLIC_KEY,
+# JWT_SECRET_KEY, MERCURE_JWT_SECRET, MAILER_DSN, SMS_DSN, PAYUM_APIKEY, PAYUM_GATEWAY. MAILER_DSN
+# is overridden with the bundled maildev subchart's DSN when maildev.enabled is true (local dev).
+# DATABASE_URL always comes from the CNPG credentials Secret (templates/cnpg-app-secret.yaml).
 
 consumer:
   # We don't use async for now so consumer isn't needed
@@ -61,8 +58,6 @@ caddy:
 # You may prefer using the managed version in production: https://mercure.rocks
 mercure:
   publicUrl: https://ghcr.io/.well-known/mercure
-  # Change me!
-  jwtSecret: "!ChangeThisMercureHubJWTSecretKey!"
   extraDirectives: cors_origins http://ghcr.io https://ghcr.io
 
 # CloudNativePG cluster configuration.
@@ -85,11 +80,6 @@ cnpg:
     requests:
       memory: 50Mi
       cpu: 1m
-
-# External PostgreSQL URL, used when cnpg.enabled is false.
-# url: postgresql://app:!ChangeMe!@database:5432/app?serverVersion=16&charset=utf8
-postgresql:
-  url: ""
 
 external-dns:
   enabled: false

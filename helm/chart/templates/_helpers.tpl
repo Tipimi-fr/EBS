@@ -88,16 +88,11 @@ CNPG cluster name
 {{- end }}
 
 {{/*
-Name of the Secret holding the database-url key: the ESO-owned CNPG credentials Secret when CNPG
-is enabled (templates/cnpg-app-secret.yaml), or the generic app Secret (templates/secrets.yaml)
-when using an external Postgres via .Values.postgresql.url.
+Name of the Secret holding the database-url key: the ESO-owned CNPG credentials Secret
+(templates/cnpg-app-secret.yaml), e.g. tipimi-ebs-plateforme-ebs-postgresql-credentials.
 */}}
 {{- define "plateforme-ebs.databaseSecretName" -}}
-{{- if .Values.cnpg.enabled }}
 {{- printf "%s-credentials" (include "plateforme-ebs.cnpgClusterName" .) }}
-{{- else }}
-{{- include "plateforme-ebs" . }}
-{{- end }}
 {{- end }}
 
 {{/*

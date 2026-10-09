@@ -48,18 +48,18 @@ spec:
                 - name: JWT_PASSPHRASE
                   valueFrom:
                     secretKeyRef:
-                      name: {{ include "plateforme-ebs" . }}
-                      key: php-jwt-passphrase
+                      name: external-secrets
+                      key: JWT_PASSPHRASE
                 - name: JWT_PUBLIC_KEY
                   valueFrom:
                     secretKeyRef:
-                      name: {{ include "plateforme-ebs" . }}
-                      key: php-jwt-public-key
+                      name: external-secrets
+                      key: JWT_PUBLIC_KEY
                 - name: JWT_SECRET_KEY
                   valueFrom:
                     secretKeyRef:
-                      name: {{ include "plateforme-ebs" . }}
-                      key: php-jwt-secret-key
+                      name: external-secrets
+                      key: JWT_SECRET_KEY
                 - name: TRUSTED_HOSTS
                   valueFrom:
                     configMapKeyRef:
@@ -83,8 +83,8 @@ spec:
                 - name: APP_SECRET
                   valueFrom:
                     secretKeyRef:
-                      name: {{ include "plateforme-ebs" . }}
-                      key: php-app-secret
+                      name: external-secrets
+                      key: APP_SECRET
                 - name: CORS_ALLOW_ORIGIN
                   valueFrom:
                     configMapKeyRef:
@@ -96,15 +96,14 @@ spec:
                       name: {{ include "plateforme-ebs.databaseSecretName" . }}
                       key: database-url
                 - name: MAILER_DSN
+                  {{- if .Values.maildev.enabled }}
+                  value: {{ printf "smtp://%s:1025" (include "maildev.fullname" .Subcharts.maildev) | quote }}
+                  {{- else }}
                   valueFrom:
                     secretKeyRef:
-                      {{- if .Values.maildev.enabled }}
-                      name: {{ include "plateforme-ebs" . }}
-                      key: mailer-dsn
-                      {{- else }}
                       name: external-secrets
                       key: MAILER_DSN
-                      {{- end }}
+                  {{- end }}
                 - name: MERCURE_URL
                   valueFrom:
                     configMapKeyRef:
@@ -118,8 +117,8 @@ spec:
                 - name: MERCURE_JWT_SECRET
                   valueFrom:
                     secretKeyRef:
-                      name: {{ include "plateforme-ebs" . }}
-                      key: mercure-jwt-secret
+                      name: external-secrets
+                      key: MERCURE_JWT_SECRET
                 {{- if .Values.meilisearch.enabled }}
                 - name: MEILISEARCH_API_KEY
                   valueFrom:
