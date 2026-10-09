@@ -5,10 +5,10 @@ metadata:
   labels:
     {{- include "plateforme-ebs.labels" . | nindent 4 }}
 spec:
-  # Matches the Deployment (caddy/php/consumer containers) and the CronJobs, both use
-  # plateforme-ebs.selectorLabels. The fixtures Job has its own selector labels
-  # (plateforme-ebs.selectorLabelsFixtures) and isn't covered here -- see
-  # networkpolicy-app-fixtures.yaml for its egress rules.
+  # Matches the Deployment (caddy/php/consumer containers), which uses
+  # plateforme-ebs.selectorLabels. Job/CronJob pods have their own selector labels
+  # (plateforme-ebs.selectorLabelsJobs) and aren't covered here -- see
+  # networkpolicy-app-jobs.yaml for their egress rules.
   podSelector:
     matchLabels:
       {{- include "plateforme-ebs.selectorLabels" . | nindent 6 }}

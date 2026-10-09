@@ -1,0 +1,188 @@
+{{- /*
+(Re)builds the Meilisearch "products" index after each deploy: the index only exists once
+app:index-products has run, and Meilisearch may start empty (new release, lost PVC), which
+makes /produits answer 500 ("Index `products` not found"). Skipped when the fixtures Job is
+enabled, since it already runs app:index-products after loading fixtures.
+*/ -}}
+{{- if and .Values.php.indexJob.enabled .Values.meilisearch.enabled (not .Values.php.fixtureJob.enabled) }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "plateforme-ebs" . }}-index-products
+  labels:
+    {{- include "plateforme-ebs.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": "post-install,post-upgrade"
+    "helm.sh/hook-delete-policy": "before-hook-creation"
+spec:
+  backoffLimit: 2
+  template:
+    metadata:
+      annotations:
+        rollme: {{ randAlphaNum 5 | quote }}
+      labels:
+        {{- include "plateforme-ebs.selectorLabelsJobs" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "plateforme-ebs.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      restartPolicy: Never
+      containers:
+        - name: {{ .Chart.Name }}-index-products
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.php.image.repository }}:{{ .Values.php.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.php.image.pullPolicy }}
+          command: ['/bin/sh', '-c']
+          args: ['set -ex; bin/console app:index-products;']
+          env:
+            - name: API_ENTRYPOINT_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "plateforme-ebs" . }}
+                  key: php-host
+            - name: JWT_PASSPHRASE
+              valueFrom:
+                secretKeyRef:
+                  name: external-secrets
+                  key: JWT_PASSPHRASE
+            - name: JWT_PUBLIC_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: external-secrets
+                  key: JWT_PUBLIC_KEY
+            - name: JWT_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: external-secrets
+                  key: JWT_SECRET_KEY
+            - name: TRUSTED_HOSTS
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "plateforme-ebs" . }}
+                  key: php-trusted-hosts
+            - name: TRUSTED_PROXIES
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "plateforme-ebs" . }}
+                  key: php-trusted-proxies
+            - name: APP_ENV
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "plateforme-ebs" . }}
+                  key: php-app-env
+            - name: APP_DEBUG
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "plateforme-ebs" . }}
+                  key: php-app-debug
+            - name: APP_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: external-secrets
+                  key: APP_SECRET
+            - name: CORS_ALLOW_ORIGIN
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "plateforme-ebs" . }}
+                  key: php-cors-allow-origin
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "plateforme-ebs.databaseSecretName" . }}
+                  key: database-url
+            - name: MERCURE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "plateforme-ebs" . }}
+                  key: mercure-url
+            - name: MERCURE_PUBLIC_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "plateforme-ebs" . }}
+                  key: mercure-public-url
+            - name: MERCURE_JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: external-secrets
+                  key: MERCURE_JWT_SECRET
+            {{- if .Values.meilisearch.enabled }}
+            - name: MEILISEARCH_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ printf "%s-%s" (include "meilisearch.fullname" .Subcharts.meilisearch ) "master-key" }}
+                  key: MEILI_MASTER_KEY
+            - name: MEILISEARCH_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "plateforme-ebs" . }}
+                  key: meilisearch-url
+            {{- end }}
+            {{- if .Values.redis.enabled }}
+            - name: REDIS_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "plateforme-ebs" . }}
+                  key: redis-url
+            {{- end }}
+            - name: PAYUM_APIKEY
+              valueFrom:
+                secretKeyRef:
+                  name: external-secrets
+                  key: PAYUM_APIKEY
+            - name: PAYUM_GATEWAY
+              valueFrom:
+                secretKeyRef:
+                  name: external-secrets
+                  key: PAYUM_GATEWAY
+            # bucket-credentials : provisionné côté infra (Tofu), pas par ce chart -- convention
+            # de nommage fixe partagée par tous les sites avec create_bucket = true.
+            - name: STORAGE_BUCKET
+              valueFrom:
+                secretKeyRef:
+                  name: bucket-credentials
+                  key: BUCKET_APP
+            - name: STORAGE_ENDPOINT
+              valueFrom:
+                secretKeyRef:
+                  name: bucket-credentials
+                  key: AWS_ENDPOINT_URL
+            - name: STORAGE_REGION
+              valueFrom:
+                secretKeyRef:
+                  name: bucket-credentials
+                  key: AWS_DEFAULT_REGION
+            - name: STORAGE_USE_PATH_STYLE_ENDPOINT
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "plateforme-ebs" . }}
+                  key: php-storage-use-path-style-endpoint
+            - name: STORAGE_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: bucket-credentials
+                  key: AWS_ACCESS_KEY_ID
+            - name: STORAGE_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: bucket-credentials
+                  key: AWS_SECRET_ACCESS_KEY
+          resources:
+            {{- toYaml .Values.resources.fixtures | nindent 12 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+{{- end }}
