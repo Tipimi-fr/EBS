@@ -1,17 +1,18 @@
-{{- if .Values.php.fixtureJob.enabled }}
+{{- if include "plateforme-ebs.jobsEnabled" . }}
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: allow-app-fixtures
+  name: allow-app-jobs
   labels:
     {{- include "plateforme-ebs.labels" . | nindent 4 }}
 spec:
-  # The fixtures Job has its own selector labels (plateforme-ebs.selectorLabelsFixtures, not
-  # plateforme-ebs.selectorLabels) so it isn't picked up as a Service endpoint. It needs its own
-  # egress rules, mirroring allow-app, since it isn't covered by that policy's podSelector.
+  # Job/CronJob pods (fixtures, index-products, daily cronjobs) have their own selector labels
+  # (plateforme-ebs.selectorLabelsJobs, not plateforme-ebs.selectorLabels) so they aren't picked
+  # up as Service endpoints. They need their own egress rules, mirroring allow-app, since they
+  # aren't covered by that policy's podSelector.
   podSelector:
     matchLabels:
-      {{- include "plateforme-ebs.selectorLabelsFixtures" . | nindent 6 }}
+      {{- include "plateforme-ebs.selectorLabelsJobs" . | nindent 6 }}
   policyTypes:
     - Egress
   egress:

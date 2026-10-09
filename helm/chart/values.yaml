@@ -30,6 +30,10 @@ php:
     enabled: false
   fixtureJob:
     enabled: false
+  # Post-install/upgrade hook Job rebuilding the Meilisearch "products" index
+  # (templates/index-products-job.yaml). Skipped when fixtureJob is enabled (it already indexes).
+  indexJob:
+    enabled: true
 
 dailyCronjobs:
   enabled: true

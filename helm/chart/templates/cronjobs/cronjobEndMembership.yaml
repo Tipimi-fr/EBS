@@ -16,6 +16,9 @@ spec:
         {{- include "plateforme-ebs.selectorLabels" . | nindent 8 }}
     spec:
       template:
+        metadata:
+          labels:
+            {{- include "plateforme-ebs.selectorLabelsJobs" . | nindent 12 }}
         spec:
           {{- with .Values.imagePullSecrets }}
           imagePullSecrets:

@@ -73,11 +73,20 @@ app.kubernetes.io/part-of: {{ include "plateforme-ebs.name" . }}
 {{- end }}
 
 {{/*
-Selector labels Fixtures job
+Selector labels for Job/CronJob pods (fixtures, index-products, daily cronjobs). Distinct from
+plateforme-ebs.selectorLabels so these pods aren't picked up as Service endpoints; network access
+is granted by networkpolicy-app-jobs.yaml and the cnpg/meilisearch/redis ingress policies.
 */}}
-{{- define "plateforme-ebs.selectorLabelsFixtures" -}}
-app.kubernetes.io/name: {{ include "plateforme-ebs.name" . }}-pwa
+{{- define "plateforme-ebs.selectorLabelsJobs" -}}
+app.kubernetes.io/name: {{ include "plateforme-ebs.name" . }}-jobs
 app.kubernetes.io/instance: {{ .Release.Name }}
+{{- end }}
+
+{{/*
+Non-empty when at least one Job/CronJob using plateforme-ebs.selectorLabelsJobs is rendered.
+*/}}
+{{- define "plateforme-ebs.jobsEnabled" -}}
+{{- if or .Values.dailyCronjobs.enabled .Values.php.fixtureJob.enabled .Values.php.fixtureCron.enabled .Values.php.indexJob.enabled }}true{{- end }}
 {{- end }}
 
 {{/*
