@@ -30,9 +30,14 @@ jobs:
   #         labels: |
   #           deploy
 
+  ci:
+    name: CI
+    uses: ./.github/workflows/ci.yml
+
   build:
     # we run the CD only on pull requests from the same repo
     if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+    needs: ci
     name: Build
     uses: ./.github/workflows/build.yml
     secrets: inherit

@@ -1,7 +1,14 @@
 name: CI
 
 on:
+    # main, tags and PRs run this workflow from cd.yml, before building/pushing images
     push:
+        branches-ignore:
+            - main
+            - feat/cnpg-eso-credential
+        tags-ignore:
+            - '*'
+    workflow_call:
 
 jobs:
     build:
