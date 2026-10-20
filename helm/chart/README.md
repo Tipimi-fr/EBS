@@ -30,7 +30,7 @@ kubectl create secret generic bucket-credentials \
   --from-literal=BUCKET_APP=plateforme-ebs-app
 ```
 
-Likewise, `APP_SECRET`/`JWT_PASSPHRASE`/`JWT_PUBLIC_KEY`/`JWT_SECRET_KEY`/`MERCURE_JWT_SECRET`/
+Likewise, `APP_SECRET`/`JWT_PASSPHRASE`/`JWT_PUBLIC_KEY`/`JWT_SECRET_KEY`/
 `SMS_DSN`/`PAYUM_APIKEY`/`PAYUM_GATEWAY` (and `MAILER_DSN` when `maildev.enabled` is false) are
 read from an `external-secrets` Secret, provisioned by infra (Tofu) from Scaleway Secret Manager on
 real clusters. Create it by hand on minikube:
@@ -38,7 +38,6 @@ real clusters. Create it by hand on minikube:
 ```bash
 kubectl create secret generic external-secrets \
   --from-literal=APP_SECRET="$(openssl rand -hex 20)" \
-  --from-literal=MERCURE_JWT_SECRET="$(openssl rand -hex 20)" \
   --from-literal=JWT_PASSPHRASE="$JWT_PASSPHRASE" \
   --from-file=JWT_PUBLIC_KEY=config/jwt/public.pem \
   --from-file=JWT_SECRET_KEY=config/jwt/private.pem \
