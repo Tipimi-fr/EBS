@@ -3,7 +3,11 @@ imagePullSecrets:
 
 route:
   enabled: true
-  host: tipimi-ebs.lt-mut-prod-scw.les-tilleuls.solutions # TODO: confirm once the prod namespace/ArgoCD app exist
+  host: tipimi.fr # TODO: confirm once the prod namespace/ArgoCD app exist
+  extraHosts:
+    - tipimi-ebs.lt-mut-prod-scw.les-tilleuls.solutions                                                                   │┃
+│                                                                                        
+
 
 meilisearch:
   persistence:
