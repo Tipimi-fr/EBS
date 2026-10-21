@@ -4,11 +4,11 @@
 
 
 # https://docs.docker.com/engine/reference/builder/#understand-how-arg-and-from-interact
-ARG PHP_VERSION=8.2
+ARG PHP_VERSION=8.2.35
 ARG CADDY_VERSION=2.10.2
 
 # yarn build
-FROM node AS yarn_build
+FROM node:22 AS yarn_build
 WORKDIR /usr/app
 RUN apt-get update && apt-get install tar
 RUN mkdir -p /usr/app/vendor/symfony
