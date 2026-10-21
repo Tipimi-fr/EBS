@@ -5,8 +5,7 @@ route:
   enabled: true
   host: tipimi.fr # TODO: confirm once the prod namespace/ArgoCD app exist
   extraHosts:
-    - tipimi-ebs.lt-mut-prod-scw.les-tilleuls.solutions                                                                   │┃
-│                                                                                        
+  - tipimi-ebs.lt-mut-prod-scw.les-tilleuls.solutions
 
 
 meilisearch:
