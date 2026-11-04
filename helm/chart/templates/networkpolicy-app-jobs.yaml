@@ -69,4 +69,7 @@ spec:
           port: 443
         - protocol: TCP
           port: 465
+          # SMTP submission (STARTTLS) -- MAILER_DSN uses smtp-relay.brevo.com:587
+        - protocol: TCP
+          port: 587
 {{- end }}
