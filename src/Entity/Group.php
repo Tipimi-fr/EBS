@@ -416,6 +416,16 @@ class Group implements \Stringable
     }
 
     /**
+     * A private group can only be joined with an invitation, even when it is
+     * charged: only a user already linked to it (pending invitation, member or
+     * admin) can pay one of its offers.
+     */
+    public function canBePaidBy(User $user): bool
+    {
+        return $this->getType()->isPublic() || $user->hasLink($this);
+    }
+
+    /**
      * @return list<Group>
      */
     public function getParentsRecursively(): array
