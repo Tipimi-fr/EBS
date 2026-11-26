@@ -4,10 +4,10 @@
 
 
 # https://docs.docker.com/engine/reference/builder/#understand-how-arg-and-from-interact
-ARG PHP_VERSION=8.2.35
-ARG CADDY_VERSION=2.11.4
+ARG PHP_VERSION=8.2.36
+ARG CADDY_VERSION=2.11.8
 # Caddy binary version, can be ahead of the base image (CADDY_VERSION)
-ARG CADDY_BUILD_VERSION=2.11.6
+ARG CADDY_BUILD_VERSION=2.11.8
 ARG VULCAIN_VERSION=1.4.2
 ARG KIN_OPENAPI_VERSION=0.149.0
 ARG X_NET_VERSION=0.62.0
