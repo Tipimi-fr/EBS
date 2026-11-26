@@ -6,6 +6,11 @@
 #    would be grouped and delayed instead of arriving as immediate, individual
 #    PRs, which is the opposite of the intended behaviour.
 #  - `cooldown` only applies to version updates, it never delays security ones.
+#
+# Each ecosystem starts with an `<ecosystem>-patch` group (patch updates only),
+# merged automatically once the CI is green (dependabot-auto-merge.yml). It must
+# stay first: a dependency goes to the first group it matches. The other groups
+# are unchanged and now collect the minor updates, reviewed by a human.
 version: 2
 updates:
   - package-ecosystem: composer
@@ -15,6 +20,10 @@ updates:
     commit-message: { prefix: "chore(deps)" }
     cooldown: { default-days: 7, semver-major-days: 30, semver-patch-days: 3 }
     groups:
+      composer-patch:
+        applies-to: version-updates
+        patterns: ["*"]
+        update-types: ["patch"]
       symfony:
         applies-to: version-updates
         patterns: ["symfony/*", "doctrine/*"]
@@ -36,6 +45,10 @@ updates:
     commit-message: { prefix: "chore(deps)" }
     cooldown: { default-days: 7, semver-major-days: 30, semver-patch-days: 3 }
     groups:
+      npm-patch:
+        applies-to: version-updates
+        patterns: ["*"]
+        update-types: ["patch"]
       npm-dev:
         applies-to: version-updates
         dependency-type: development
@@ -52,6 +65,10 @@ updates:
     commit-message: { prefix: "chore(deps)" }
     cooldown: { default-days: 7, semver-major-days: 30, semver-patch-days: 3 }
     groups:
+      helm-patch:
+        applies-to: version-updates
+        patterns: ["*"]
+        update-types: ["patch"]
       helm:
         applies-to: version-updates
         patterns: ["*"]
@@ -61,6 +78,10 @@ updates:
     schedule: { interval: monthly }
     commit-message: { prefix: "chore(deps)" }
     groups:
+      github-actions-patch:
+        applies-to: version-updates
+        patterns: ["*"]
+        update-types: ["patch"]
       actions:
         applies-to: version-updates
         patterns: ["*"]
@@ -70,3 +91,8 @@ updates:
     schedule: { interval: weekly, day: monday }
     commit-message: { prefix: "chore(deps)" }
     cooldown: { default-days: 7, semver-major-days: 30, semver-patch-days: 3 }
+    groups:
+      docker-patch:
+        applies-to: version-updates
+        patterns: ["*"]
+        update-types: ["patch"]
