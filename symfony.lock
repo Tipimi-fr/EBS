@@ -217,6 +217,9 @@
             "tests/bootstrap.php"
         ]
     },
+    "sentry/sentry-symfony": {
+        "version": "5.17.0"
+    },
     "snc/redis-bundle": {
         "version": "4.3",
         "recipe": {

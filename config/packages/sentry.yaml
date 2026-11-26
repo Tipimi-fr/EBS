@@ -1,0 +1,32 @@
+# Suivi des erreurs (Sentry). Totalement inactif tant que SENTRY_DSN est vide ou absent
+# (dev local, CI, tests) : aucun événement n'est envoyé. Voir docs/sentry.md.
+sentry:
+    # DSN du projet Sentry "tipimi-ebs", fourni par l'environnement (jamais dans le dépôt).
+    dsn: '%env(default::SENTRY_DSN)%'
+    options:
+        environment: '%env(default:kernel.environment:SENTRY_ENVIRONMENT)%'
+        release: '%env(default::SENTRY_RELEASE)%'
+        # Aucune donnée personnelle : ni IP, ni cookies, ni utilisateur, ni corps des requêtes.
+        send_default_pii: false
+        max_request_body_size: none
+        # Traces de performance : désactivées par défaut (0).
+        traces_sample_rate: '%env(float:default:sentry_traces_sample_rate_default:SENTRY_TRACES_SAMPLE_RATE)%'
+        # Pas de bruit pour les erreurs 4xx (page introuvable, accès refusé, requête invalide...).
+        ignore_exceptions:
+            - Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+            - Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException
+            - Symfony\Component\HttpKernel\Exception\BadRequestHttpException
+            - Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException
+            - Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException
+            - Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException
+            - Symfony\Component\HttpKernel\Exception\NotAcceptableHttpException
+            - Symfony\Component\Security\Core\Exception\AccessDeniedException
+            - Symfony\Component\Security\Core\Exception\AuthenticationException
+            - Symfony\Component\Security\Core\Exception\InsufficientAuthenticationException
+
+parameters:
+    sentry_traces_sample_rate_default: 0
+
+when@test:
+    sentry:
+        dsn: ~

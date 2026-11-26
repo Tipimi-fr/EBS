@@ -211,6 +211,28 @@ spec:
                 secretKeyRef:
                   name: bucket-credentials
                   key: AWS_SECRET_ACCESS_KEY
+            # Sentry : tout est optionnel, sans DSN le SDK est inactif (voir docs/sentry.md).
+            - name: SENTRY_DSN
+              valueFrom:
+                secretKeyRef:
+                  name: external-secrets
+                  key: SENTRY_DSN
+                  optional: true
+            - name: SENTRY_JS_DSN
+              valueFrom:
+                secretKeyRef:
+                  name: external-secrets
+                  key: SENTRY_JS_DSN
+                  optional: true
+            {{- with .Values.php.sentry.environment }}
+            - name: SENTRY_ENVIRONMENT
+              value: {{ . | quote }}
+            - name: SENTRY_JS_ENVIRONMENT
+              value: {{ . | quote }}
+            {{- end }}
+            # Release = tag de l'image (nonprod-<sha> / prod-<sha>)
+            - name: SENTRY_RELEASE
+              value: {{ .Values.php.image.tag | default .Chart.AppVersion | quote }}
           volumeMounts:
             - mountPath: /srv/app/public/storage
               name: storage
