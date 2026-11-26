@@ -8,6 +8,10 @@ twig:
         upload_maxsize_total: '%upload_maxsize_total%' 
         upload_max_images: '%upload_max_images%'
         brand: '%brand%' 
+        # Sentry front : DSN lu à l'exécution (vide = Sentry JS inactif). Voir docs/sentry.md.
+        sentry_js_dsn: '%env(default::SENTRY_JS_DSN)%'
+        sentry_js_environment: '%env(default:kernel.environment:SENTRY_JS_ENVIRONMENT)%'
+        sentry_release: '%env(default::SENTRY_RELEASE)%'
         role_user: !php/const App\Entity\User::ROLE_USER 
         role_admin: !php/const App\Entity\User::ROLE_ADMIN 
  

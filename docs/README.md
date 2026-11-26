@@ -80,3 +80,7 @@ Run the tests and generate the code coverage report:
 Run all checks like the Github CI:
 
     make ci
+
+## Error tracking
+
+Sentry is optional and inactive without a DSN, see [sentry.md](sentry.md).

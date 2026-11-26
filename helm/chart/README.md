@@ -47,6 +47,9 @@ kubectl create secret generic external-secrets \
   --from-literal=MAILER_DSN=smtp://localhost:1025
 ```
 
+The optional keys `SENTRY_DSN` and `SENTRY_JS_DSN` can be added to the same Secret to enable Sentry
+(see `docs/sentry.md`); without them Sentry stays inactive.
+
 get minikube ip via `minikube ip`
 
 add in your `/etc/hosts` file:

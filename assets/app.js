@@ -9,6 +9,9 @@
 // any CSS you import will output into a single css file (app.css in this case)
 import './styles/global.scss'
 
+// Sentry (inactif si le DSN n'est pas fourni par le layout)
+import './sentry'
+
 // start the Stimulus application
 import './stimulus'
 
