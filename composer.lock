@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "bdebd4b6477f8fba727f07e7190a227d",
+    "content-hash": "4960cfaa63fb8be99f59f0de94d71e17",
     "packages": [
         {
             "name": "alcohol/iso4217",
@@ -2378,16 +2378,16 @@
         },
         {
             "name": "easycorp/easyadmin-bundle",
-            "version": "v4.29.17",
+            "version": "v4.29.18",
             "source": {
                 "type": "git",
                 "url": "https://github.com/EasyCorp/EasyAdminBundle.git",
-                "reference": "cd2b64a06f9c3502f08a2e22e159a7fea3ad3f88"
+                "reference": "64fe83c8c89061f6d5c170417b8b197914c4fbb0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/EasyCorp/EasyAdminBundle/zipball/cd2b64a06f9c3502f08a2e22e159a7fea3ad3f88",
-                "reference": "cd2b64a06f9c3502f08a2e22e159a7fea3ad3f88",
+                "url": "https://api.github.com/repos/EasyCorp/EasyAdminBundle/zipball/64fe83c8c89061f6d5c170417b8b197914c4fbb0",
+                "reference": "64fe83c8c89061f6d5c170417b8b197914c4fbb0",
                 "shasum": ""
             },
             "require": {
@@ -2471,7 +2471,7 @@
             ],
             "support": {
                 "issues": "https://github.com/EasyCorp/EasyAdminBundle/issues",
-                "source": "https://github.com/EasyCorp/EasyAdminBundle/tree/v4.29.17"
+                "source": "https://github.com/EasyCorp/EasyAdminBundle/tree/v4.29.18"
             },
             "funding": [
                 {
@@ -2479,7 +2479,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-11-17T07:20:13+00:00"
+            "time": "2026-11-25T08:08:09+00:00"
         },
         {
             "name": "egulias/email-validator",
@@ -4326,8 +4326,7 @@
                 "issues": "https://github.com/Jean85/pretty-package-versions/issues",
                 "source": "https://github.com/Jean85/pretty-package-versions/tree/2.1.1"
             },
-            "time": "2025-03-19T14:43:43+00:00",
-            "published-time": "2025-03-19T14:50:06+00:00"
+            "time": "2025-03-19T14:43:43+00:00"
         },
         {
             "name": "knplabs/knp-components",
@@ -8753,8 +8752,7 @@
                     "type": "custom"
                 }
             ],
-            "time": "2026-11-19T10:49:48+00:00",
-            "published-time": "2026-11-19T11:52:05+00:00"
+            "time": "2026-11-19T10:49:48+00:00"
         },
         {
             "name": "sentry/sentry-symfony",
@@ -8856,8 +8854,7 @@
                     "type": "custom"
                 }
             ],
-            "time": "2026-11-19T14:41:16+00:00",
-            "published-time": "2026-11-19T14:44:57+00:00"
+            "time": "2026-11-19T14:41:16+00:00"
         },
         {
             "name": "snc/redis-bundle",
@@ -13300,8 +13297,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-11-24T06:28:33+00:00",
-            "published-time": "2026-11-25T09:20:02+00:00"
+            "time": "2026-11-24T06:28:33+00:00"
         },
         {
             "name": "symfony/rate-limiter",
@@ -20622,7 +20618,7 @@
     ],
     "aliases": [],
     "minimum-stability": "beta",
-    "stability-flags": {},
+    "stability-flags": [],
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
@@ -20634,9 +20630,9 @@
         "ext-xsl": "*",
         "ext-zip": "*"
     },
-    "platform-dev": {},
+    "platform-dev": [],
     "platform-overrides": {
         "php": "8.2.0"
     },
-    "plugin-api-version": "2.11.0"
+    "plugin-api-version": "2.6.0"
 }
