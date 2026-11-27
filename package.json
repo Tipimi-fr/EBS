@@ -35,5 +35,8 @@
         "@fortawesome/fontawesome-free": "^7.3.1",
         "@sentry/browser": "^11.19.0",
         "flatpickr": "^4.6.13"
+    },
+    "resolutions": {
+        "swiper": "^12.1.2"
     }
 }
